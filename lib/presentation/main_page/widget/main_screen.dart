@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nexflix_clone_flutter/fast_laugh/fast_laugh.dart';
-import 'package:nexflix_clone_flutter/newAndHot/new_hot.dart';
+import 'package:nexflix_clone_flutter/presentation/fast_laugh/fast_laugh.dart';
+import 'package:nexflix_clone_flutter/presentation/newAndHot/new_hot.dart';
 import 'package:nexflix_clone_flutter/presentation/download/download_screen.dart';
 import 'package:nexflix_clone_flutter/presentation/home/screenhome.dart';
 import 'package:nexflix_clone_flutter/search/screen_search.dart';
