@@ -9,7 +9,7 @@ class ScreenDownload extends StatelessWidget {
 
   final _widgetList = [
     const SmartDownloads(),
-    SectionTwo(),
+    const SectionTwo(),
     const SectionThree(),
   ];
 

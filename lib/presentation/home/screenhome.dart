@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nexflix_clone_flutter/core/color/colors.dart';
 import 'package:nexflix_clone_flutter/core/constants/constants.dart';
+import 'package:nexflix_clone_flutter/domain/apiendpoints.dart';
 import 'package:nexflix_clone_flutter/presentation/home/widgets/background_card_widget.dart';
 import 'package:nexflix_clone_flutter/presentation/home/widgets/number_tille_card_widget.dart';
 import '../widgets/main_title_card.dart';
 
 ValueNotifier<bool> scrollNotifier = ValueNotifier(true);
 
-class ScreenHome extends StatelessWidget {
+class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
 
+  @override
+  State<ScreenHome> createState() => _ScreenHomeState();
+}
+
+class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +39,28 @@ class ScreenHome extends StatelessWidget {
                 ListView(
                   children: const [
                     BackgroundWidget(),
-                    MainTitleCard(title: 'Released in the past year'),
-                    MainTitleCard(title: 'Trending'),
+                    MainTitleCard(
+                      title: 'New Releases',
+                      apiUrl: ApiEndPoints.trendingall,
+                    ),
+                    MainTitleCard(
+                      title: 'Trending Now',
+                      apiUrl: ApiEndPoints.moviepopular,
+                    ),
                     NumberTitleCardWidget(),
-                    MainTitleCard(title: 'Release Tense '),
-                    MainTitleCard(title: 'South indian Movies'),
+                    MainTitleCard(
+                      title: 'Popular Shows ',
+                      apiUrl: ApiEndPoints.tvpopular,
+                    ),
+                    MainTitleCard(
+                      title: 'Upcoming',
+                      apiUrl: ApiEndPoints.upcoming,
+                    ),
                   ],
                 ),
                 scrollNotifier.value == true
                     ? AnimatedContainer(
-                      duration: const Duration(milliseconds: 1000),
+                        duration: const Duration(milliseconds: 1000),
                         width: double.infinity,
                         height: 90,
                         color: Colors.black.withOpacity(0.2),

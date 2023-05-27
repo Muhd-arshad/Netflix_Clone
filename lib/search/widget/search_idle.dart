@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:nexflix_clone_flutter/core/color/colors.dart';
+import 'package:nexflix_clone_flutter/domain/apiendpoints.dart';
+import 'package:nexflix_clone_flutter/infrastucture/apikey.dart';
+import 'package:nexflix_clone_flutter/infrastucture/base_client.dart';
+import 'package:nexflix_clone_flutter/model/movie_info.dart';
 import 'package:nexflix_clone_flutter/search/widget/searchtitle_widget.dart';
 
 import '../../core/constants/constants.dart';
@@ -20,10 +25,31 @@ class SearchIdleWidget extends StatelessWidget {
         ),
         kHeight,
         Expanded(
-          child: ListView.separated(
-              itemBuilder: (context, index) => const TopSearchItemTile(),
+          child: FutureBuilder(
+            future: apicall(ApiEndPoints.trendingall),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: Column(
+                    children: [
+                      CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
+                    ],
+                  ),
+                );
+              }
+              if (snapshot.data.results == null) {
+                return const Center(
+                  child: Text('Not Found'),
+                );
+              }
+              return ListView.separated(
+              itemBuilder: (context, index) => TopSearchItemTile(movieInfo:snapshot.data.results[index] ),
               separatorBuilder: (context, index) => const SizedBox(height: 20),
-              itemCount: 10),
+              itemCount: snapshot.data.results.length );
+            },
+          ),
         ),
       ],
     );
@@ -31,35 +57,41 @@ class SearchIdleWidget extends StatelessWidget {
 }
 
 class TopSearchItemTile extends StatelessWidget {
-  const TopSearchItemTile({super.key});
+  final MovieInfoModel movieInfo;
+  const TopSearchItemTile({super.key, required this.movieInfo});
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    String url =
+        'https://image.tmdb.org/t/p/w500${movieInfo.posterPath}?api_key=$apiKey';
 
     return Row(
       children: [
         Container(
           width: screenWidth * 0.35,
           height: 65,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(
-                    'https://www.themoviedb.org/t/p/w1066_and_h600_bestv2/q7vmCCmyiHnuKGMzHZlr0fD44b9.jpg'),
-                fit: BoxFit.cover),
+          decoration: BoxDecoration(
+            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
           ),
         ),
         kWidth,
-        const Expanded(
-            child: Text(
-          " Movie Name",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        )),
+        Expanded(
+          child: Text(
+            movieInfo.title ?? 'No movie found',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
         const Icon(
           CupertinoIcons.play_circle,
-          size: 50,color: txtColor,
+          size: 50,
+          color: txtColor,
         )
       ],
     );
   }
 }
+// ListView.separated(
+//               itemBuilder: (context, index) => const TopSearchItemTile(),
+//               separatorBuilder: (context, index) => const SizedBox(height: 20),
+//               itemCount: 10),

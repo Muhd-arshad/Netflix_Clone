@@ -4,8 +4,10 @@ import '../../core/color/colors.dart';
 
 class VideoWidget extends StatelessWidget {
   const VideoWidget({
-    super.key,
+     
+    super.key, this.videoImage,
   });
+  final String? videoImage;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class VideoWidget extends StatelessWidget {
           height: 200,
           width: double.infinity,
           child: Image.network(
-            'https://www.themoviedb.org/t/p/w355_and_h200_multi_faces/qVNACrSwu8RCgf9loLKfTv0mDeq.jpg',
+            videoImage!,
             fit: BoxFit.cover,
           ),
         ),

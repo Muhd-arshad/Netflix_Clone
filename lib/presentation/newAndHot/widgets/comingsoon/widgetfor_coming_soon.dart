@@ -1,41 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nexflix_clone_flutter/core/color/colors.dart';
 import 'package:nexflix_clone_flutter/core/constants/constants.dart';
+import 'package:nexflix_clone_flutter/model/movie_info.dart';
 import 'package:nexflix_clone_flutter/presentation/home/widgets/custom_button_widget.dart';
 
 import '../../../widgets/video_widgets.dart';
 
-class ComingSoonWidget extends StatelessWidget {
-  const ComingSoonWidget({
-    super.key,
+class ComingSoonInfo extends StatelessWidget {
+  const ComingSoonInfo({
+    super.key, required this.movieInfo,
   });
+  final MovieInfoModel movieInfo;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    String imageUrl = 'https://image.tmdb.org/t/p/w500${movieInfo.posterPath}?api_key=00852b78f457782c4d7c59505d4e06a0';
 
     return Row(
       children: [
-        const SizedBox(
+        SizedBox(
           width: 50,
           height: 450,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'FEB',
-                style: TextStyle(
+                fetchDate(movieInfo.releaseDate!),
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),
               ),
-              Text(
-                '11',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              // Text(
+              //   '11',
+              //   style: TextStyle(
+              //     fontSize: 30,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -45,21 +49,25 @@ class ComingSoonWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             const VideoWidget(),
+              VideoWidget(videoImage:  imageUrl),
               kHeight20,
-              const Row(
+               Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Black Night',
-                    style: TextStyle(
-                      letterSpacing: -3,
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                    
+                      movieInfo.originalTitle!,
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        letterSpacing: -3,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  Spacer(),
-                  Row(
+                  const Spacer(),
+                  const Row(
                     children: [
                       CustomButtonWidget(
                         icon: Icons.notifications,
@@ -81,19 +89,21 @@ class ComingSoonWidget extends StatelessWidget {
               ),
               kHeight,
               Text(
-                'Coming on friday',
+                 ("Coming on ${fetchDay(movieInfo.releaseDate!)}"),
                 style: txtStyle16,
               ),
               kHeight20,
               Text(
-                'Black Night',
+                movieInfo.originalTitle ?? 'Empty Title',
                 style: txtStyle18,
               ),
               kHeight,
-              const Text(
-                'Landing the lead in the school musical is dream come true for a jodi,util the pressure sends her confidence-- and her relationship--into a tailspin.',
-                style: TextStyle(
+               Text(
+                movieInfo.overview,
+                maxLines: 4,
+                style: const TextStyle(
                   color: greycolor,
+                  
                 ),
               ),
             ],
@@ -101,6 +111,21 @@ class ComingSoonWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+  String fetchDate(String date) {
+    //convert date in string format to date format 
+    DateTime dateInFormat = DateTime.parse(date);
+    final formatDate = (DateFormat.MMMMd().format(dateInFormat)).split(" ");
+    //add \n to make it in the displayable format eg:
+    //APR
+    //5
+    return "${formatDate.first.substring(0, 3)} \n${formatDate.last} ";
+  }
+
+  String fetchDay(String date) {
+    DateTime dateInFormat = DateTime.parse(date);
+    final dayName = DateFormat('EEEE').format(dateInFormat);
+    return dayName;
   }
 }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nexflix_clone_flutter/core/color/colors.dart';
-import 'package:nexflix_clone_flutter/presentation/newAndHot/widgets/everyones_watching/widget_everyone_watching.dart';
+import 'package:nexflix_clone_flutter/presentation/newAndHot/widgets/comingsoon/comingsoonwidget.dart';
+import 'package:nexflix_clone_flutter/presentation/newAndHot/widgets/everyones_watching/everyon_wacthing_widget.dart';
 import '../../core/constants/constants.dart';
-import 'widgets/comingsoon/widgetfor_coming_soon.dart';
 
 class ScreenNewAndHot extends StatelessWidget {
   const ScreenNewAndHot({super.key});
@@ -30,11 +30,10 @@ class ScreenNewAndHot extends StatelessWidget {
                   size: 30,
                 ),
                 kWidth,
-                SizedBox(
-                  height: 25,
+                Container(
+                  height: 30,
                   width: 30,
-                  child: Image.network(
-                      'https://www.themoviedb.org/t/p/w220_and_h330_face/aX0H63vho7rZ9Rm3I567Zf00Z1t.jpg'),
+                  color: Colors.blue,
                 ),
                 kWidth,
               ],
@@ -59,7 +58,7 @@ class ScreenNewAndHot extends StatelessWidget {
             )),
         body: TabBarView(children: [
           // _buildTaabularView('comingSoon'),
-          _comingsoon(context),
+          buildComingSoon(),
           _buildEveryOneWatching(),
         ]),
       ),
@@ -67,21 +66,12 @@ class ScreenNewAndHot extends StatelessWidget {
   }
 }
 
-Widget _comingsoon(BuildContext context) {
-  return ListView.separated(
-    shrinkWrap: true,
-    itemBuilder: (context, index) => const ComingSoonWidget(),
-    separatorBuilder: (context, index) => kHeight,
-    itemCount: 10,
-  );
-}
+
+  Widget buildComingSoon() {
+    return const ComingSoonWidget();
+  }
+
 
 Widget _buildEveryOneWatching() {
-  return ListView.separated(
-    shrinkWrap: true,
-    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-    itemBuilder: (context, index) => const EveryOneWatchingWidget(),
-    separatorBuilder: (context, index) => kHeight,
-    itemCount: 10,
-  );
+  return  const EveryonesWatchingWidget();
 }
